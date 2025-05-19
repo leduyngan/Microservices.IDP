@@ -1,4 +1,6 @@
 ﻿using Microservice.IDP.Extensions;
+using Microservice.IDP.Persistence;
+using Microservice.IDP.Persistence.Migrations;
 using Serilog;
 
 Log.Information("Starting up");
@@ -13,7 +15,10 @@ try
         .ConfigureServices()
         .ConfigurePipeline();
     
-    app.Run();
+    SeedUserData.EnsureSeedData(builder.Configuration.GetConnectionString("IdentitySqlConnection"));
+    app
+        .MigrateDatabase()
+        .Run();
 }
 catch (Exception ex)
 {

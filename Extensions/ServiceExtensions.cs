@@ -1,3 +1,8 @@
+using Microservice.IDP.Entities;
+using Microservice.IDP.Persistence;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 
@@ -63,7 +68,7 @@ public static class ServiceExtensions
 
     public static void ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("");
+        var connectionString = configuration.GetConnectionString("IdentitySqlConnection");
         services.AddIdentityServer(options =>
             {
                 // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
@@ -75,11 +80,46 @@ public static class ServiceExtensions
             })
             // not recommended for production - you need to store your key material somewhere secure
             .AddDeveloperSigningCredential()
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
-            .AddInMemoryApiResources(Config.ApiResources)
-            .AddTestUsers(TestUsers.Users)
+            // .AddInMemoryIdentityResources(Config.IdentityResources)
+            // .AddInMemoryApiScopes(Config.ApiScopes)
+            // .AddInMemoryClients(Config.Clients)
+            // .AddInMemoryApiResources(Config.ApiResources)
+            // .AddTestUsers(TestUsers.Users)
+            .AddConfigurationStore(option =>
+            {
+                option.ConfigureDbContext = c => c.UseSqlServer(
+                    connectionString,
+                    builder => builder.MigrationsAssembly(typeof(Program).Assembly.FullName));
+            })
+            .AddOperationalStore(option =>
+            {
+                option.ConfigureDbContext = c => c.UseSqlServer(
+                    connectionString,
+                    builder => builder.MigrationsAssembly(typeof(Program).Assembly.FullName));
+            })
+            .AddAspNetIdentity<User>()
+            .AddProfileService<IdentityProfileService>()
             ;
+    }
+    
+    public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("IdentitySqlConnection");
+        services
+            .AddDbContext<IdentityContext>(options => options
+                .UseSqlServer(connectionString))
+            .AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
+                opt.User.RequireUniqueEmail = true;
+                opt.Lockout.AllowedForNewUsers = true;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+            })
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
     }
 }

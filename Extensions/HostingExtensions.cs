@@ -10,6 +10,7 @@ internal static class HostingExtensions
         builder.Services.AddRazorPages();
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureCors();
+        builder.Services.ConfigureIdentity(builder.Configuration);
         builder.Services.ConfigureIdentityServer(builder.Configuration);
 
         return builder.Build();

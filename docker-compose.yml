@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # database section
+  identitydb:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: identitydb
+    environment:
+      SA_PASSWORD: "Passw0rd!"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - identity_sqlserver_data:/var/opt/msql
+    restart: always
+    ports:
+      - "1437:1433"
+        
+volumes:
+  identity_sqlserver_data:
+    external: false
+  
