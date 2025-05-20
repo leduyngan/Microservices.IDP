@@ -1,3 +1,4 @@
+using Microservice.IDP.Services.EmailService;
 using Serilog;
 
 namespace Microservice.IDP.Extensions;
@@ -8,6 +9,8 @@ internal static class HostingExtensions
     {
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
+        builder.Services.AddConfigurationSettings(builder.Configuration);
+        builder.Services.AddScoped<IEmailSender, SmtpMailService>();
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureCors();
         builder.Services.ConfigureIdentity(builder.Configuration);

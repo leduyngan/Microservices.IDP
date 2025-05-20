@@ -1,3 +1,4 @@
+using Microservice.IDP.Common;
 using Microservice.IDP.Entities;
 using Microservice.IDP.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,15 @@ public static class ServiceExtensions
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
         });
+    }
+    
+    internal static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var emailSettings = configuration.GetSection(nameof(SMTPEmailSetting))
+            .Get<SMTPEmailSetting>();
+        services.AddSingleton(emailSettings);
+        
+        return services;
     }
 
     public static void ConfigureCors(this IServiceCollection services)
