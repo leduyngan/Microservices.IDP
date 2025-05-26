@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\README.md = src\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FEC13405-23A0-439F-8103-83C18E3D6307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.IDP.Presentation", "src\Microservices.IDP.Presentation\Microservices.IDP.Presentation.csproj", "{FF879806-2F1F-4986-A4FF-5CE9713D017B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{03F387F4-4E94-4103-822A-EC9B40EC5D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F387F4-4E94-4103-822A-EC9B40EC5D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03F387F4-4E94-4103-822A-EC9B40EC5D40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF879806-2F1F-4986-A4FF-5CE9713D017B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF879806-2F1F-4986-A4FF-5CE9713D017B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF879806-2F1F-4986-A4FF-5CE9713D017B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF879806-2F1F-4986-A4FF-5CE9713D017B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03F387F4-4E94-4103-822A-EC9B40EC5D40} = {FEC13405-23A0-439F-8103-83C18E3D6307}
+		{FF879806-2F1F-4986-A4FF-5CE9713D017B} = {FEC13405-23A0-439F-8103-83C18E3D6307}
 	EndGlobalSection
 EndGlobal

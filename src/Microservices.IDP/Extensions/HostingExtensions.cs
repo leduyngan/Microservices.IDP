@@ -1,9 +1,10 @@
 using Microservices.IDP.Common.Domains;
 using Microservices.IDP.Extensions;
-using Microservices.IDP.Repositories;
 using Microservices.IDP.Services.EmailService;
 using Microservices.IDP.Common.Domains;
-using Microservices.IDP.Repositories;
+using Microservices.IDP.Common.Repositories;
+using Microservices.IDP.Common.Repositories.Interfaces;
+using Microservices.IDP.Presentation;
 using Microservices.IDP.Services.EmailService;
 using Serilog;
 
@@ -23,7 +24,14 @@ internal static class HostingExtensions
         builder.Services.ConfigureIdentityServer(builder.Configuration);
         builder.Services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
         builder.Services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
+        builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+        builder.Services.AddControllers(config =>
+        {
+            config.RespectBrowserAcceptHeader = true;
+            config.ReturnHttpNotAcceptable = true;
+        }).AddApplicationPart(typeof(AssemblyReference).Assembly);
+        builder.Services.ConfigureSwagger(builder.Configuration);
         return builder.Build();
     }
     
@@ -39,6 +47,8 @@ internal static class HostingExtensions
         // uncomment if you want to add a UI
         app.UseStaticFiles();
         app.UseCors();
+        app.UseSwagger();
+        app.UseSwaggerUI( c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity API"));
         app.UseRouting();
         
         // set cookie policy before authentication/authorization setup

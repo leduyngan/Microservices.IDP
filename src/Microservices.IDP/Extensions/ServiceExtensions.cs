@@ -4,6 +4,7 @@ using Microservices.IDP.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 
@@ -131,5 +132,24 @@ public static class ServiceExtensions
             })
             .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
+    }
+    
+    public static void ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
+        {
+            c.EnableAnnotations();
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Identity Server API",
+                Version = "v1",
+                Description = "",
+                Contact = new OpenApiContact
+                {
+                    Name = "Identity Service"
+                },
+            });
+        });
     }
 }
