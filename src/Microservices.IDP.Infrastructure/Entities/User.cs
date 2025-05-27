@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Microservices.IDP.Entities;
+namespace Microservices.IDP.Infrastructure.Entities;
 
 public class User : IdentityUser
 {

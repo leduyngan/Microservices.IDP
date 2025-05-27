@@ -1,11 +1,11 @@
-using Microservices.IDP.Common.Domains;
-using Microservices.IDP.Common.Repositories.Interfaces;
-using Microservices.IDP.Entities;
+using Microservices.IDP.Infrastructure.Domains;
+using Microservices.IDP.Infrastructure.Entities;
+using Microservices.IDP.Infrastructure.Repositories.Interfaces;
 using Microservices.IDP.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Microservices.IDP.Common.Repositories;
+namespace Microservices.IDP.Infrastructure.Repositories;
 
 public class RepositoryManager : IRepositoryManager
 {

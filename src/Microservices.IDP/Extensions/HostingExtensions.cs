@@ -1,9 +1,8 @@
-using Microservices.IDP.Common.Domains;
 using Microservices.IDP.Extensions;
 using Microservices.IDP.Services.EmailService;
-using Microservices.IDP.Common.Domains;
-using Microservices.IDP.Common.Repositories;
-using Microservices.IDP.Common.Repositories.Interfaces;
+using Microservices.IDP.Infrastructure.Domains;
+using Microservices.IDP.Infrastructure.Repositories;
+using Microservices.IDP.Infrastructure.Repositories.Interfaces;
 using Microservices.IDP.Presentation;
 using Microservices.IDP.Services.EmailService;
 using Serilog;

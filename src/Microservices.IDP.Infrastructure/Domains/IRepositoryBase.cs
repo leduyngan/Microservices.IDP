@@ -1,8 +1,7 @@
-using System.Data;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Microservices.IDP.Common.Domains;
+namespace Microservices.IDP.Infrastructure.Domains;
 
 public interface IRepositoryBase<T, K>
     where T : EntityBase<K>

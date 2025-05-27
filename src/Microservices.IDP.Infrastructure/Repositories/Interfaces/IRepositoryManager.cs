@@ -1,13 +1,13 @@
-using Microservices.IDP.Entities;
+using Microservices.IDP.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Microservices.IDP.Common.Repositories.Interfaces;
+namespace Microservices.IDP.Infrastructure.Repositories.Interfaces;
 
 public interface IRepositoryManager
 {
-    // UserManager<User> UserManager { get; }
-    // RoleManager<User> RoleManager { get; }
+    UserManager<User> UserManager { get; }
+    RoleManager<IdentityRole> RoleManager { get; }
     IPermissionRepository Permission { get; }
     Task<int> SaveAsync();
     Task<IDbContextTransaction> BeginTransactionAsync();

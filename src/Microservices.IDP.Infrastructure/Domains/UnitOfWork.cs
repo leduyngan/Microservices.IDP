@@ -1,7 +1,6 @@
 using Microservices.IDP.Persistence;
-using Microsoft.EntityFrameworkCore;
 
-namespace Microservices.IDP.Common.Domains;
+namespace Microservices.IDP.Infrastructure.Domains;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -1,5 +1,4 @@
-using Microservices.IDP.Entities;
-using Microservices.IDP.Entities.Configuration;
+using Microservices.IDP.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-namespace Microservices.IDP.Common;
+namespace Microservices.IDP.Infrastructure.Common;
 
 public static class SystemConstants
 {

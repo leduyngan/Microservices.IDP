@@ -1,4 +1,4 @@
-namespace Microservices.IDP.Common.Domains;
+namespace Microservices.IDP.Infrastructure.Domains;
 
 public interface IEntityBase<T>
 {

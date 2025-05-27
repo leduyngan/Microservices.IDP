@@ -1,8 +1,8 @@
-using Microservices.IDP.Common;
+using Microservices.IDP.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Microservices.IDP.Entities.Configuration;
+namespace Microservices.IDP.Infrastructure.Entities.Configuration;
 
 public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {

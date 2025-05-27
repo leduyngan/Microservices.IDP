@@ -4,7 +4,8 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityModel;
 using Microservices.IDP.Common;
-using Microservices.IDP.Entities;
+using Microservices.IDP.Infrastructure.Common;
+using Microservices.IDP.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Microservices.IDP.Extensions;

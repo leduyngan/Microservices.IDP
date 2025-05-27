@@ -1,10 +1,9 @@
-using Microservices.IDP.Entities;
+using Microservices.IDP.Infrastructure.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microservices.IDP.Common;
 
-namespace Microservices.IDP.Entities;
+namespace Microservices.IDP.Infrastructure.Entities;
 
 public static class ModelBuilderExtensions
 {

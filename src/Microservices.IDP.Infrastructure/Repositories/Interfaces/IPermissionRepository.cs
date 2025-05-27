@@ -1,7 +1,7 @@
-using Microservices.IDP.Common.Domains;
-using Microservices.IDP.Entities;
+using Microservices.IDP.Infrastructure.Domains;
+using Microservices.IDP.Infrastructure.Entities;
 
-namespace Microservices.IDP.Common.Repositories.Interfaces;
+namespace Microservices.IDP.Infrastructure.Repositories.Interfaces;
 
 public interface IPermissionRepository : IRepositoryBase<Permission, long>
 {

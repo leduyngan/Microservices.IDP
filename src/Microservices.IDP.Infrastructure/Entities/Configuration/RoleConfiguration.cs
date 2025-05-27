@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Microservices.IDP.Entities.Configuration;
+namespace Microservices.IDP.Infrastructure.Entities.Configuration;
 
 public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
 {

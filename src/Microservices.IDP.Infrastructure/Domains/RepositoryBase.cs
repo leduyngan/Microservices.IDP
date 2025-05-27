@@ -1,10 +1,9 @@
-using System.Data;
 using System.Linq.Expressions;
 using Microservices.IDP.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Microservices.IDP.Common.Domains;
+namespace Microservices.IDP.Infrastructure.Domains;
 
 public class RepositoryBase<T, K> : IRepositoryBase<T, K>
     where T : EntityBase<K>
