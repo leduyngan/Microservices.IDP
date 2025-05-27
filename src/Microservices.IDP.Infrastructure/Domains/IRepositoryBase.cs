@@ -1,3 +1,4 @@
+using System.Data;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -32,22 +33,22 @@ public interface IRepositoryBase<T, K>
     
     Task<int> SaveChangesAsync();
     Task<IDbContextTransaction> BeginTransactionAsync();
-    Task EndTransactionAsync();
+    Task EndTransactionAsync(); 
     Task RollbackTransactionAsync();
 
     #region Dapper
 
-    // Task<IReadOnlyList<TModel>> QueryAsync<TModel>(string sql, object? param,
-    //     CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : EntityBase<K>;
-    //
-    // Task<TModel> QueryFirstOrDefaultAsync<TModel>(string sql, object? param,
-    //     CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : EntityBase<K>;
-    //
-    // Task<TModel> QuerySingleAsync<TModel>(string sql, object? param,
-    //     CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : EntityBase<K>;
-    //
-    // Task<int> ExecuteAsync(string sql, object? param,
-    //     CommandType? commandType, IDbTransaction? transaction, int? commandTimeout);
+    Task<IReadOnlyList<TModel>> QueryAsync<TModel>(string sql, object? param, 
+        CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : class;
+
+    Task<TModel> QueryFirstOrDefaultAsync<TModel>(string sql, object? param, 
+        CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : class;
+
+    Task<TModel> QuerySingleAsync<TModel>(string sql, object? param, 
+        CommandType? commandType, IDbTransaction? transaction, int? commandTimeout) where TModel : class;
+
+    Task<int> ExecuteAsync(string sql, object? param, 
+        CommandType? commandType, IDbTransaction? transaction, int? commandTimeout);
 
     #endregion Dapper
 }

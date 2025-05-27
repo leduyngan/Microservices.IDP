@@ -7,6 +7,10 @@ namespace Microservices.IDP.Infrastructure.Entities;
 
 public class Permission : EntityBase<long>
 {
+    public Permission()
+    {
+        
+    }
     public Permission(string function, string command, string roleId)
     {
         Function = function;

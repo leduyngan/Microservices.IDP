@@ -1,11 +1,12 @@
 using Microservices.IDP.Infrastructure.Domains;
 using Microservices.IDP.Infrastructure.Entities;
+using Microservices.IDP.Infrastructure.ViewModels;
 
 namespace Microservices.IDP.Infrastructure.Repositories.Interfaces;
 
 public interface IPermissionRepository : IRepositoryBase<Permission, long>
 {
-    Task<IEnumerable<Permission>> GetPermissionsByRole(string roleId, bool trackChanges = false);
+    Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRole(string roleId);
 
     void UpdatePermissionsByRoleId(string roleId, IEnumerable<Permission> permissionCollection,
         bool trackChanges = false);
