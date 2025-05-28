@@ -131,6 +131,7 @@ public static class ServiceExtensions
                 opt.Lockout.MaxFailedAccessAttempts = 3;
             })
             .AddEntityFrameworkStores<IdentityContext>()
+            .AddUserStore<MicroservicesUserStore>()
             .AddDefaultTokenProviders();
     }
     
@@ -149,6 +150,60 @@ public static class ServiceExtensions
                 {
                     Name = "Identity Service"
                 },
+            });
+            
+            var identityServerBaseUrl = configuration.GetSection("IdentityServer:BaseUrl").Value;
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl = new Uri($"{identityServerBaseUrl}/connect/authorize"),
+                        Scopes = new Dictionary<string, string>()
+                        {
+                            {"microservices_api.read", "Microservice API Reader Scope"},
+                            {"microservices_api.write", "Microservice API Write Scope"}
+                        }
+                    }
+                }
+            });
+            
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference{ Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                    },
+                    new List<string>
+                    {
+                        "microservices_api.read",
+                        "microservices_api.write"
+                    }
+                }
+            });
+        });
+    }
+
+    public static void ConfigureAuthentication(this IServiceCollection services)
+    {
+        services.AddAuthentication()
+            .AddLocalApi("Bearer", option =>
+            {
+                option.ExpectedScope = "microservices_api.read";
+            });
+    }
+    
+    public static void ConfigureAuthorization(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("Bearer", policy =>
+            {
+                policy.AddAuthenticationSchemes("Bearer");
+                policy.RequireAuthenticatedUser();
             });
         });
     }

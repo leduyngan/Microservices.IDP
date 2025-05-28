@@ -5,6 +5,7 @@ using Microservices.IDP.Infrastructure.Repositories;
 using Microservices.IDP.Infrastructure.Repositories.Interfaces;
 using Microservices.IDP.Presentation;
 using Microservices.IDP.Services.EmailService;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace Microservices.IDP.Extensions;
@@ -16,6 +17,7 @@ internal static class HostingExtensions
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
         builder.Services.AddConfigurationSettings(builder.Configuration);
+        builder.Services.AddAutoMapper(typeof(Program));
         builder.Services.AddScoped<IEmailSender, SmtpMailService>();
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureCors();
@@ -29,7 +31,10 @@ internal static class HostingExtensions
         {
             config.RespectBrowserAcceptHeader = true;
             config.ReturnHttpNotAcceptable = true;
+            config.Filters.Add(new ProducesAttribute("application/json", "text/plain", "text/json"));
         }).AddApplicationPart(typeof(AssemblyReference).Assembly);
+        builder.Services.ConfigureAuthentication();
+        builder.Services.ConfigureAuthorization();
         builder.Services.ConfigureSwagger(builder.Configuration);
         return builder.Build();
     }
@@ -47,9 +52,14 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseCors();
         app.UseSwagger();
-        app.UseSwaggerUI( c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity API"));
+        app.UseSwaggerUI(c =>
+        {
+            c.OAuthClientId("microservices_swagger");
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity API");
+            c.DisplayRequestDuration();
+        });
         app.UseRouting();
-        
+        app.UseMiddleware<ErrorWrappingMiddleware>();
         // set cookie policy before authentication/authorization setup
         app.UseCookiePolicy();
         app.UseIdentityServer();
@@ -58,7 +68,7 @@ internal static class HostingExtensions
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapDefaultControllerRoute().RequireAuthorization();
+            endpoints.MapDefaultControllerRoute().RequireAuthorization("Bearer");
             endpoints.MapRazorPages().RequireAuthorization();
         });
 

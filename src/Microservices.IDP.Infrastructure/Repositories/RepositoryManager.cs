@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microservices.IDP.Infrastructure.Domains;
 using Microservices.IDP.Infrastructure.Entities;
 using Microservices.IDP.Infrastructure.Repositories.Interfaces;
@@ -11,17 +12,19 @@ public class RepositoryManager : IRepositoryManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IdentityContext _dbContext;
+    private readonly IMapper _mapper;
     public UserManager<User> UserManager { get; }
     public RoleManager<IdentityRole> RoleManager { get; }
     private readonly Lazy<IPermissionRepository> _permissionRepository;
 
-    public RepositoryManager(IUnitOfWork unitOfWork, IdentityContext dbContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+    public RepositoryManager(IUnitOfWork unitOfWork, IdentityContext dbContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _dbContext = dbContext;
         UserManager = userManager;
         RoleManager = roleManager;
-        _permissionRepository = new Lazy<IPermissionRepository>(() => new PermissionRepository(_dbContext, _unitOfWork));
+        _mapper = mapper;
+        _permissionRepository = new Lazy<IPermissionRepository>(() => new PermissionRepository(_dbContext, _unitOfWork, UserManager, _mapper));
     }
 
     public int ContextHashCode => _dbContext.GetHashCode(); // Thêm để kiểm tra instance

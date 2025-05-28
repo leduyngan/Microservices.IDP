@@ -2,12 +2,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Microservices.IDP.Infrastructure.Repositories.Interfaces;
 using Microservices.IDP.Infrastructure.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microservices.IDP.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]/roles/{roleId}")]
+[Authorize("Bearer")]
 public class PermissionsController : ControllerBase
 {
     private readonly IRepositoryManager _repository;

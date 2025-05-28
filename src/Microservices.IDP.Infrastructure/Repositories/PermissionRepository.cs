@@ -1,17 +1,23 @@
 using System.Data;
+using AutoMapper;
 using Dapper;
 using Microservices.IDP.Infrastructure.Domains;
 using Microservices.IDP.Infrastructure.Entities;
 using Microservices.IDP.Infrastructure.Repositories.Interfaces;
 using Microservices.IDP.Infrastructure.ViewModels;
 using Microservices.IDP.Persistence;
+using Microsoft.AspNetCore.Identity;
 
 namespace Microservices.IDP.Infrastructure.Repositories;
 
 public class PermissionRepository : RepositoryBase<Permission, long>, IPermissionRepository
 {
-    public PermissionRepository(IdentityContext dbContext, IUnitOfWork unitOfWork) : base(dbContext, unitOfWork)
+    private readonly UserManager<User> _userManager;
+    private readonly IMapper _mapper;
+    public PermissionRepository(IdentityContext dbContext, IUnitOfWork unitOfWork, UserManager<User> userManager, IMapper mapper) : base(dbContext, unitOfWork)
     {
+        _userManager = userManager;
+        _mapper = mapper;
     }
     
     public async Task<IReadOnlyList<PermissionViewModel>> GetPermissionsByRole(string roleId)
@@ -67,5 +73,18 @@ public class PermissionRepository : RepositoryBase<Permission, long>, IPermissio
         parameters.Add("@roleId", roleId, DbType.String);
         parameters.Add("@permissions", dt.AsTableValuedParameter("dbo.Permission"));
         return ExecuteAsync("Update_Permissions_ByRole", parameters);
+    }
+
+    public async Task<IEnumerable<PermissionUserViewModel>> GetPermissionsByUser(User user)
+    {
+        // current user's roles: Admin, Customer, Visitor
+        var currentUserRole = await _userManager.GetRolesAsync(user);
+        // load all Permission 
+        var query = FindAll()
+            .Where(x => currentUserRole.Contains(x.RoleId))
+            .Select(x => new Permission(x.Function, x.Command, x.RoleId));
+        
+        var result = _mapper.Map<IEnumerable<PermissionUserViewModel>>(query);
+        return result;
     }
 }
